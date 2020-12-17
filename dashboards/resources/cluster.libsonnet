@@ -101,11 +101,11 @@ local template = grafana.template;
         )
         .addPanel(
           g.panel('CPU Requests Commitment') +
-          g.statPanel('sum(kube_pod_container_resource_requests_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_requests{%(clusterLabel)s="$cluster", resource="cpu"}) / sum(kube_node_status_allocatable_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="cpu",%(clusterLabel)s="$cluster")' % $._config)
+          g.statPanel('sum(kube_pod_container_resource_requests_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_requests{%(clusterLabel)s="$cluster", resource="cpu"}) / sum(kube_node_status_allocatable_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="cpu",%(clusterLabel)s="$cluster"})' % $._config)
         )
         .addPanel(
           g.panel('CPU Limits Commitment') +
-          g.statPanel('sum(kube_pod_container_resource_limits_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_limits{%(clusterLabel)s="$cluster", resource="cpu"}) / sum(kube_node_status_allocatable_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="cpu",%(clusterLabel)s="$cluster")' % $._config)
+          g.statPanel('sum(kube_pod_container_resource_limits_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_limits{%(clusterLabel)s="$cluster", resource="cpu"}) / sum(kube_node_status_allocatable_cpu_cores{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="cpu",%(clusterLabel)s="$cluster"})' % $._config)
         )
         .addPanel(
           g.panel('Memory Utilisation') +
@@ -113,11 +113,11 @@ local template = grafana.template;
         )
         .addPanel(
           g.panel('Memory Requests Commitment') +
-          g.statPanel('sum(kube_pod_container_resource_requests_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_requests{%(clusterLabel)s="$cluster", resource="memory"}) / sum(kube_node_status_allocatable_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="memory",%(clusterLabel)s="$cluster"))' % $._config)
+          g.statPanel('sum(kube_pod_container_resource_requests_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_requests{%(clusterLabel)s="$cluster", resource="memory"}) / sum(kube_node_status_allocatable_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="memory",%(clusterLabel)s="$cluster"})' % $._config)
         )
         .addPanel(
           g.panel('Memory Limits Commitment') +
-          g.statPanel('sum(kube_pod_container_resource_limits_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_limits{%(clusterLabel)s="$cluster", resource="memory"}) / sum(kube_node_status_allocatable_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="memory",%(clusterLabel)s="$cluster"))' % $._config)
+          g.statPanel('sum(kube_pod_container_resource_limits_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_pod_container_resource_limits{%(clusterLabel)s="$cluster", resource="memory"}) / sum(kube_node_status_allocatable_memory_bytes{%(clusterLabel)s="$cluster"} OR kube_node_status_allocatable{resource="memory",%(clusterLabel)s="$cluster"})' % $._config)
         )
       )
       .addRow(
