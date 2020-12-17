@@ -25,7 +25,7 @@
           {
             alert: 'KubeCPUOvercommit',
             expr: |||
-              sum(namespace:kube_pod_container_resource_requests_cpu_cores:sum{%(ignoringOverprovisionedWorkloadSelector)s})
+              sum(namespace_cpu:kube_pod_container_resource_requests:sum{%(ignoringOverprovisionedWorkloadSelector)s})
                 /
               sum(kube_node_status_allocatable_cpu_cores OR kube_node_status_allocatable{resource="cpu"})
                 >
@@ -43,7 +43,7 @@
           {
             alert: 'KubeMemoryOvercommit',
             expr: |||
-              sum(namespace:kube_pod_container_resource_requests_memory_bytes:sum{%(ignoringOverprovisionedWorkloadSelector)s})
+              sum(namespace_memory:kube_pod_container_resource_requests_bytes:sum{%(ignoringOverprovisionedWorkloadSelector)s})
                 /
               sum(kube_node_status_allocatable_memory_bytes OR kube_node_status_allocatable{resource="memory"})
                 >

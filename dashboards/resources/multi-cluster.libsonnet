@@ -61,10 +61,10 @@ local template = grafana.template;
             g.panel('CPU Quota') +
             g.tablePanel([
               'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate) by (%(clusterLabel)s)' % $._config,
-              'sum(kube_pod_container_resource_requests_cpu_cores) by (%(clusterLabel)s)' % $._config,
-              'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate) by (%(clusterLabel)s) / sum(kube_pod_container_resource_requests_cpu_cores) by (%(clusterLabel)s)' % $._config,
-              'sum(kube_pod_container_resource_limits_cpu_cores) by (%(clusterLabel)s)' % $._config,
-              'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate) by (%(clusterLabel)s) / sum(kube_pod_container_resource_limits_cpu_cores) by (%(clusterLabel)s)' % $._config,
+              'sum(kube_pod_container_resource_requests_cpu_cores OR kube_pod_container_resource_requests{resource="cpu"}) by (%(clusterLabel)s)' % $._config,
+              'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate) by (%(clusterLabel)s) / sum(kube_pod_container_resource_requests_cpu_cores OR kube_pod_container_resource_requests{resource="cpu"}) by (%(clusterLabel)s)' % $._config,
+              'sum(kube_pod_container_resource_limits_cpu_cores OR kube_pod_container_resource_limits{resource="cpu"}) by (%(clusterLabel)s)' % $._config,
+              'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate) by (%(clusterLabel)s) / sum(kube_pod_container_resource_limits_cpu_cores OR kube_pod_container_resource_limits{resource="cpu"}) by (%(clusterLabel)s)' % $._config,
             ], tableStyles {
               'Value #A': { alias: 'CPU Usage' },
               'Value #B': { alias: 'CPU Requests' },
@@ -90,10 +90,10 @@ local template = grafana.template;
             g.tablePanel([
               // Not using container_memory_usage_bytes here because that includes page cache
               'sum(container_memory_rss{container!=""}) by (%(clusterLabel)s)' % $._config,
-              'sum(kube_pod_container_resource_requests_memory_bytes) by (%(clusterLabel)s)' % $._config,
-              'sum(container_memory_rss{container!=""}) by (%(clusterLabel)s) / sum(kube_pod_container_resource_requests_memory_bytes) by (%(clusterLabel)s)' % $._config,
-              'sum(kube_pod_container_resource_limits_memory_bytes) by (%(clusterLabel)s)' % $._config,
-              'sum(container_memory_rss{container!=""}) by (%(clusterLabel)s) / sum(kube_pod_container_resource_limits_memory_bytes) by (%(clusterLabel)s)' % $._config,
+              'sum(kube_pod_container_resource_requests_memory_bytes OR kube_pod_container_resource_requests{resource="memory"}) by (%(clusterLabel)s)' % $._config,
+              'sum(container_memory_rss{container!=""}) by (%(clusterLabel)s) / sum(kube_pod_container_resource_requests_memory_bytes OR kube_pod_container_resource_requests{resource="memory"}) by (%(clusterLabel)s)' % $._config,
+              'sum(kube_pod_container_resource_limits_memory_bytes OR kube_pod_container_resource_limits{resource="memory"}) by (%(clusterLabel)s)' % $._config,
+              'sum(container_memory_rss{container!=""}) by (%(clusterLabel)s) / sum(kube_pod_container_resource_limits_memory_bytes OR kube_pod_container_resource_limits{resource="memory"}) by (%(clusterLabel)s)' % $._config,
             ], tableStyles {
               'Value #A': { alias: 'Memory Usage', unit: 'bytes' },
               'Value #B': { alias: 'Memory Requests', unit: 'bytes' },
