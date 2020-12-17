@@ -58,6 +58,8 @@
               /
               max by(node) (
                 kube_node_status_capacity_pods{%(kubeStateMetricsSelector)s} != 1
+                OR
+                kube_node_status_capacity{%(kubeStateMetricsSelector)s,resource="pods"} != 1
               ) > 0.95
             ||| % $._config,
             'for': '15m',

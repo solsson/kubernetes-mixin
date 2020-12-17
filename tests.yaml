@@ -82,7 +82,7 @@ tests:
 
 - interval: 1m
   input_series:
-  - series: 'kube_node_status_capacity_pods{instance="172.17.0.5:8443",node="minikube",job="kube-state-metrics", namespace="kube-system"}'
+  - series: 'kube_node_status_capacity{resource="pods",instance="172.17.0.5:8443",node="minikube",job="kube-state-metrics", namespace="kube-system"}'
     values: '3x15'
   - series: 'kube_pod_info{endpoint="https-main",instance="172.17.0.5:8443",job="kube-state-metrics",namespace="kube-system",node="minikube",pod="pod-1",service="kube-state-metrics"}'
     values: '1x15'
