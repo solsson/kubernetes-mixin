@@ -217,7 +217,7 @@
             record: 'kube_pod_windows_container_resource_memory_request',
             expr: |||
               max by (namespace, pod, container) (
-                  kube_pod_container_resource_requests_memory_bytes{%(kubeStateMetricsSelector)s} OR kube_pod_container_resource_requests{resource="memory",%(kubeStateMetricsSelector)s}
+                kube_pod_container_resource_requests{resource="memory",%(kubeStateMetricsSelector)s}
               ) * on(container,pod,namespace) (windows_container_available)
             ||| % $._config,
           },
@@ -231,7 +231,7 @@
             record: 'kube_pod_windows_container_resource_cpu_cores_request',
             expr: |||
               max by (namespace, pod, container) (
-                  kube_pod_container_resource_requests_cpu_bytes{%(kubeStateMetricsSelector)s} OR kube_pod_container_resource_requests{resource="cpu",%(kubeStateMetricsSelector)s}
+                kube_pod_container_resource_requests{resource="cpu",%(kubeStateMetricsSelector)s}
               ) * on(container,pod,namespace) (windows_container_available)
             ||| % $._config,
           },
