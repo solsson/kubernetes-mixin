@@ -111,7 +111,7 @@
             // Disk utilisation (ms spent, by rate() it's bound by 1 second)
             record: ':windows_node_disk_utilisation:avg_irate',
             expr: |||
-              avg(irate(windows_logical_disk_read_seconds_total{%(wmiExporterSelector)s}[1m]) + 
+              avg(irate(windows_logical_disk_read_seconds_total{%(wmiExporterSelector)s}[1m]) +
                   irate(windows_logical_disk_write_seconds_total{%(wmiExporterSelector)s}[1m])
                 )
             ||| % $._config,
@@ -159,16 +159,16 @@
           {
             record: ':windows_node_net_saturation:sum_irate',
             expr: |||
-              sum(irate(windows_net_packets_received_discarded{%(wmiExporterSelector)s}[1m])) +
-              sum(irate(windows_net_packets_outbound_discarded{%(wmiExporterSelector)s}[1m]))
+              sum(irate(windows_net_packets_received_discarded_total{%(wmiExporterSelector)s}[1m])) +
+              sum(irate(windows_net_packets_outbound_discarded_total{%(wmiExporterSelector)s}[1m]))
             ||| % $._config,
           },
           {
             record: 'node:windows_node_net_saturation:sum_irate',
             expr: |||
               sum by (instance) (
-                (irate(windows_net_packets_received_discarded{%(wmiExporterSelector)s}[1m]) +
-                irate(windows_net_packets_outbound_discarded{%(wmiExporterSelector)s}[1m]))
+                (irate(windows_net_packets_received_discarded_total{%(wmiExporterSelector)s}[1m]) +
+                irate(windows_net_packets_outbound_discarded_total{%(wmiExporterSelector)s}[1m]))
               )
             ||| % $._config,
           },
@@ -178,7 +178,7 @@
         name: 'windows.pod.rules',
         rules: [
           {
-            record: 'windows_container_available',
+            record: 'windows_pod_container_available',
             expr: |||
               windows_container_available{%(wmiExporterSelector)s} * on(container_id) group_left(container, pod, namespace) max(kube_pod_container_info{%(kubeStateMetricsSelector)s}) by(container, container_id, pod, namespace)
             ||| % $._config,
@@ -216,29 +216,25 @@
           {
             record: 'kube_pod_windows_container_resource_memory_request',
             expr: |||
-              max by (namespace, pod, container) (
-                kube_pod_container_resource_requests{resource="memory",%(kubeStateMetricsSelector)s}
-              ) * on(container,pod,namespace) (windows_container_available)
+              kube_pod_container_resource_requests {resource="memory",%(kubeStateMetricsSelector)s} * on(container,pod,namespace) (windows_pod_container_available)
             ||| % $._config,
           },
           {
             record: 'kube_pod_windows_container_resource_memory_limit',
             expr: |||
-              kube_pod_container_resource_limits_memory_bytes {%(kubeStateMetricsSelector)s} * on(container,pod,namespace) (windows_container_available)
+              kube_pod_container_resource_limits_memory_bytes {%(kubeStateMetricsSelector)s} * on(container,pod,namespace) (windows_pod_container_available)
             ||| % $._config,
           },
           {
             record: 'kube_pod_windows_container_resource_cpu_cores_request',
             expr: |||
-              max by (namespace, pod, container) (
-                kube_pod_container_resource_requests{resource="cpu",%(kubeStateMetricsSelector)s}
-              ) * on(container,pod,namespace) (windows_container_available)
+              kube_pod_container_resource_requests  {resource="cpu",%(kubeStateMetricsSelector)s} * on(container,pod,namespace) (windows_pod_container_available)
             ||| % $._config,
           },
           {
             record: 'kube_pod_windows_container_resource_cpu_cores_limit',
             expr: |||
-              kube_pod_container_resource_limits_cpu_cores  {%(kubeStateMetricsSelector)s} * on(container,pod,namespace) (windows_container_available)
+              kube_pod_container_resource_limits_cpu_cores  {%(kubeStateMetricsSelector)s} * on(container,pod,namespace) (windows_pod_container_available)
             ||| % $._config,
           },
           {

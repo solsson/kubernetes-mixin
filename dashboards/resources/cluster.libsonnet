@@ -101,7 +101,7 @@ local template = grafana.template;
         )
         .addPanel(
           g.panel('CPU Requests Commitment') +
-          g.statPanel('sum(kube_pod_container_resource_requests{%(clusterLabel)s="$cluster", resource="cpu"}) / sum(kube_node_status_allocatable{resource="cpu",%(clusterLabel)s="$cluster"})' % $._config)
+          g.statPanel('sum(namespace:kube_pod_container_resource_requests:sum{%(clusterLabel)s="$cluster", resource="cpu"}) / sum(kube_node_status_allocatable{resource="cpu",%(clusterLabel)s="$cluster"})' % $._config)
         )
         .addPanel(
           g.panel('CPU Limits Commitment') +
@@ -134,10 +134,10 @@ local template = grafana.template;
           g.panel('CPU Quota') +
           g.tablePanel(podWorkloadColumns + [
             'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{%(clusterLabel)s="$cluster"}) by (namespace)' % $._config,
-            'sum(kube_pod_container_resource_requests{%(clusterLabel)s="$cluster", resource="cpu"}) by (namespace)' % $._config,
-            'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{%(clusterLabel)s="$cluster"}) by (namespace) / sum(kube_pod_container_resource_requests{%(clusterLabel)s="$cluster", resource="cpu"}) by (namespace)' % $._config,
+            'sum(namespace:kube_pod_container_resource_requests:sum{%(clusterLabel)s="$cluster", resource="cpu"}) by (namespace)' % $._config,
+            'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{%(clusterLabel)s="$cluster"}) by (namespace) / sum(namespace:kube_pod_container_resource_requests:sum{%(clusterLabel)s="$cluster", resource="cpu"}) by (namespace)' % $._config,
             'sum(kube_pod_container_resource_limits{%(clusterLabel)s="$cluster", resource="cpu"}) by (namespace)' % $._config,
-            'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{%(clusterLabel)s="$cluster"}) by (namespace) / sum(kube_pod_container_resource_limitss{%(clusterLabel)s="$cluster", resource="cpu"}) by (namespace)' % $._config,
+            'sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{%(clusterLabel)s="$cluster"}) by (namespace) / sum(kube_pod_container_resource_limits{%(clusterLabel)s="$cluster", resource="cpu"}) by (namespace)' % $._config,
           ], tableStyles {
             'Value #C': { alias: 'CPU Usage' },
             'Value #D': { alias: 'CPU Requests' },
